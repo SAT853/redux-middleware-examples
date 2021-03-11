@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { addArticlesActions } from "../../stores/articleReducers";
+import { addArticles } from "../../stores/articleReducers";
 
 const Form = (props) => {
   const [title, setTitle] = useState("");
@@ -30,7 +30,7 @@ const Form = (props) => {
 
 const mapDispathToProps = (dispatch) => {
   return {
-    addArticle: (article) => dispatch(addArticlesActions(article)),
+    addArticle: (article) => dispatch(addArticles(article)),
   };
 };
 

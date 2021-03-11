@@ -1,5 +1,5 @@
 import React from "react";
-import { incrementAction, decrementAction, resetAction } from "../stores/actions";
+import { increment, decrement, reset } from "../stores/countReducers";
 import { connect } from "react-redux";
 
 const Button = (props) => {
@@ -16,9 +16,9 @@ const Button = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    increment: () => dispatch(incrementAction()),
-    decrement: () => dispatch(decrementAction()),
-    reset: () => dispatch(resetAction()),
+    increment: () => dispatch(increment()),
+    decrement: () => dispatch(decrement()),
+    reset: () => dispatch(reset()),
   };
 };
 
