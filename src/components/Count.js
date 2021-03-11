@@ -10,6 +10,6 @@ const Count = ({ count }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { count: state.count };
+  return { count: state.count.count };
 };
 export default connect(mapStateToProps, null)(Count);

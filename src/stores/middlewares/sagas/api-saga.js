@@ -1,15 +1,13 @@
 import { takeEvery, call, put } from "redux-saga/effects";
 
 export default function* watcherSaga() {
-  debugger;
   yield takeEvery("FETCH_REQUESTED", workerSaga);
 }
 
-function* workerSaga(actions) {
-  debugger;
+function* workerSaga() {
   try {
     const payload = yield call(getData);
-    yield put({ type: "DATA_LOADED", payload });
+    yield put({ type: "articlesReducers/dataLoaded", payload });
   } catch (error) {
     yield put({ type: "API_ERRORED", payload: error });
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 const List = ({ articles = [] }) => {
-  return articles ? (
+  return articles.length ? (
     <div>
       <ul>
         {articles.map((article) => (
