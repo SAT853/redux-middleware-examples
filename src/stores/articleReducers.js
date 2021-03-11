@@ -1,3 +1,5 @@
+import { createAction, createReducer } from "@reduxjs/toolkit";
+
 const initialState = { articles: [], remoteArticles: [] };
 
 // Actions Types
@@ -5,12 +7,13 @@ export const ADD_ARTICLES = "ADD_ARTICLES";
 export const DATA_LOADED = "DATA_LOADED";
 export const FETCH_REQUESTED = "FETCH_REQUESTED";
 
-// Actions Creators
-export const addArticlesFuntions = (payload) => {
-  return { type: ADD_ARTICLES, payload };
-};
+// Actions Creators with reduxToolKit
+export const addArticlesActions = createAction(ADD_ARTICLES);
+export const getDataActions = createAction(FETCH_REQUESTED);
+const dataLoaded = createAction(DATA_LOADED);
 
-// export const getDataActions = (props) => (dispatch) => {
+// Thunk middleware examples
+// export const getDataActions = () => async (dispatch) => {
 //   debugger;
 //   return fetch("https://jsonplaceholder.typicode.com/posts")
 //     .then((response) => response.json())
@@ -20,21 +23,13 @@ export const addArticlesFuntions = (payload) => {
 //     });
 // };
 
-export const getDataActions = () => {
-  return { type: FETCH_REQUESTED };
-};
-
-const articlesReducers = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_ARTICLES:
-      return Object.assign({}, state, { articles: state.articles.concat(action.payload) });
-    case DATA_LOADED: {
-      debugger;
-      return Object.assign({}, state, { remoteArticles: state.remoteArticles.concat(action.payload) });
-    }
-    default:
-      return state;
-  }
-};
+const articlesReducers = createReducer(initialState, {
+  [addArticlesActions]: (state, action) => {
+    state.articles = action.payload;
+  },
+  [dataLoaded]: (state, action) => {
+    state.remoteArticles = action.payload;
+  },
+});
 
 export default articlesReducers;

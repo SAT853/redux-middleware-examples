@@ -1,22 +1,16 @@
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
+
 import articleReducers from "./articleReducers";
 import countReducers from "./countReducers";
 import { forbiddenWordsMiddleware } from "./middlewares";
 import apiSaga from "./middlewares/sagas/api-saga";
 
-import createSagaMiddleware from "redux-saga";
-
 const initialiseSagaMiddleware = createSagaMiddleware();
 
-// Init Redux Dev Tool
-const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const middleware = [forbiddenWordsMiddleware, initialiseSagaMiddleware];
 
-const allReducers = combineReducers({
-  articles: articleReducers,
-  count: countReducers,
-});
-
-const store = createStore(allReducers, storeEnhancers(applyMiddleware(forbiddenWordsMiddleware, initialiseSagaMiddleware)));
+const store = configureStore({ reducer: { articles: articleReducers, count: countReducers }, middleware });
 
 initialiseSagaMiddleware.run(apiSaga);
 
