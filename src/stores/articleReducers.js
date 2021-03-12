@@ -1,4 +1,4 @@
-import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = { articles: [], remoteArticles: [] };
 
@@ -20,7 +20,7 @@ const articleSlice = createSlice({
     },
   },
   // extraReducers: {
-  // Redux-thunk Example
+  //   // Redux-thunk Example
   //   [getData.fulfilled]: (state, action) => {
   //     state.remoteArticles = [...action.payload];
   //   },
@@ -29,6 +29,7 @@ const articleSlice = createSlice({
 
 const articlesReducers = articleSlice.reducer;
 const getData = createAction("FETCH_REQUESTED");
+const checkWord = createAction("CHECKWORD");
 const { addArticles, dataLoaded } = articleSlice.actions;
 
-export { addArticles, getData, articlesReducers, dataLoaded };
+export { addArticles, getData, articlesReducers, dataLoaded, checkWord };

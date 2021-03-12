@@ -1,10 +1,11 @@
 import { takeEvery, call, put } from "redux-saga/effects";
 
-export default function* watcherSaga() {
-  yield takeEvery("FETCH_REQUESTED", workerSaga);
+export default function* rootSaga() {
+  yield takeEvery("FETCH_REQUESTED", fetchData);
+  yield takeEvery("CHECKWORD", forbiddenword);
 }
 
-function* workerSaga() {
+export function* fetchData() {
   try {
     const payload = yield call(getData);
     yield put({ type: "articlesReducers/dataLoaded", payload });
@@ -13,6 +14,17 @@ function* workerSaga() {
   }
 }
 
-const getData = async () => {
+export function* forbiddenword(action) {
+  const forbiddenWords = ["spam", "money"];
+  const isWordFound = forbiddenWords.filter((word) => action.payload.title.includes(word));
+  if (isWordFound.length) {
+    alert("Found Bad Word!");
+    yield put({ type: "FOUND_BADWORD" });
+  } else {
+    yield put({ type: "articlesReducers/addArticles", payload: action.payload });
+  }
+}
+
+export const getData = async () => {
   return fetch("https://jsonplaceholder.typicode.com/posts").then((response) => response.json());
 };
