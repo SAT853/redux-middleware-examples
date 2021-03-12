@@ -5,7 +5,7 @@ import { getData } from "../stores/articleReducers";
 const Post = (props) => {
   React.useEffect(() => {
     props.getData();
-  }, []);
+  });
   return (
     <ul>
       {props.articles.map((el) => (
