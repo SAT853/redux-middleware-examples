@@ -1,6 +1,11 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = { articles: [], remoteArticles: [] };
+
+// Redux-thunk example
+// const getData = createAsyncThunk("articlesReducers/getData", () =>
+//   fetch("https://jsonplaceholder.typicode.com/posts").then((response) => response.json())
+// );
 
 // Reducer with createSlice Function
 const articleSlice = createSlice({
@@ -14,10 +19,16 @@ const articleSlice = createSlice({
       state.remoteArticles = [...action.payload];
     },
   },
+  // extraReducers: {
+  // Redux-thunk Example
+  //   [getData.fulfilled]: (state, action) => {
+  //     state.remoteArticles = [...action.payload];
+  //   },
+  // },
 });
 
 const articlesReducers = articleSlice.reducer;
-const getDataActions = createAction("FETCH_REQUESTED");
+const getData = createAction("FETCH_REQUESTED");
 const { addArticles, dataLoaded } = articleSlice.actions;
 
-export { addArticles, getDataActions, articlesReducers, dataLoaded };
+export { addArticles, getData, articlesReducers, dataLoaded };
