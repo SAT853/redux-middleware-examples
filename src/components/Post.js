@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getDataActions } from "../stores/articleReducers";
+import { getData } from "../stores/articleReducers";
 
 const Post = (props) => {
   React.useEffect(() => {
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return { getData: () => dispatch(getDataActions()) };
+  return { getData: () => dispatch(getData()) };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
