@@ -1,4 +1,4 @@
-import { takeEvery, call, put, all, select, take, fork } from "redux-saga/effects";
+import { takeEvery, call, put, all, select, take, fork, cancel, cancelled } from "redux-saga/effects";
 
 import * as api from "./api";
 
@@ -79,6 +79,10 @@ function* authorize(user, password) {
     yield call(api.storeItem, { token });
   } catch (error) {
     yield put({ type: "LOGIN_ERROR", error });
+  } finally {
+    if (yield cancelled()) {
+      // DO additional Stuff
+    }
   }
 }
 
@@ -97,9 +101,10 @@ LOGOUT.................................................. missed!
 function* loginFlow() {
   while (true) {
     const { user = "sathish", password = "12345678" } = yield take("LOGIN_REQUEST");
-    yield fork(authorize, user, password);
+    const task = yield fork(authorize, user, password);
     // We're also doing yield take(['LOGOUT', 'LOGIN_ERROR']). It means we are watching for 2 concurrent
-    yield take(["LOGOUT", "LOGIN_ERROR"]);
+    const action = yield take(["LOGOUT", "LOGIN_ERROR"]);
+    if (action.type === "LOGOUT") yield cancel(task);
     yield call(api.clearItem, "token");
   }
 }
