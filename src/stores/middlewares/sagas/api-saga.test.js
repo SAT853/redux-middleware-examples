@@ -1,17 +1,25 @@
-import { fetchData, rootSaga } from "./api-saga";
-import { takeEvery } from "redux-saga/effects";
+import { fetchData, makeApiRequest } from "./api-saga";
+import { call, put, takeEvery } from "redux-saga/effects";
 
 import * as api from "./api";
 import { runSaga } from "@redux-saga/core";
 
 describe("saga-api-testing", () => {
   describe("partial test", () => {
-    const gen = rootSaga();
+    const gen = makeApiRequest();
     it("should call fetchData", () => {
       expect(gen.next().value).toEqual(takeEvery("FETCH_REQUESTED", fetchData));
     });
     it("should be done on next iteration", () => {
       expect(gen.next().done).toBeTruthy();
+    });
+    const fetchGen = fetchData();
+    it("should call api", () => {
+      expect(fetchGen.next().value).toEqual(call(api.getData));
+    });
+    it("should dispatch success action", () => {
+      expect(fetchGen.next({}).value).toEqual(put({ type: "articlesReducers/dataLoaded", payload: {} }));
+      expect(fetchGen.next().done).toBeTruthy();
     });
   });
   describe("full saga test", () => {
