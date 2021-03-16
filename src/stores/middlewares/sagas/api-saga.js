@@ -1,13 +1,15 @@
 import { takeEvery, call, put } from "redux-saga/effects";
 
-export default function* rootSaga() {
+import * as api from "./api";
+
+export function* rootSaga() {
   yield takeEvery("FETCH_REQUESTED", fetchData);
   yield takeEvery("CHECKWORD", forbiddenword);
 }
 
 export function* fetchData() {
   try {
-    const payload = yield call(getData);
+    const payload = yield call(api.getData);
     yield put({ type: "articlesReducers/dataLoaded", payload });
   } catch (error) {
     yield put({ type: "API_ERRORED", payload: error });
