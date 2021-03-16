@@ -76,7 +76,7 @@ function* authorize(user, password) {
   try {
     const token = yield call(api.authorize, user, password);
     yield put({ type: "LOGIN_SUCCESS", token });
-    return token;
+    yield call(api.storeItem, { token });
   } catch (error) {
     yield put({ type: "LOGIN_ERROR", error });
   }
@@ -97,11 +97,9 @@ LOGOUT.................................................. missed!
 function* loginFlow() {
   while (true) {
     const { user = "sathish", password = "12345678" } = yield take("LOGIN_REQUEST");
-    const token = yield call(authorize, user, password);
-    if (token) {
-      yield call(api.storeItem, { token });
-      yield take("LOGOUT");
-      yield call(api.clearItem, "token");
-    }
+    yield fork(authorize, user, password);
+    // We're also doing yield take(['LOGOUT', 'LOGIN_ERROR']). It means we are watching for 2 concurrent
+    yield take(["LOGOUT", "LOGIN_ERROR"]);
+    yield call(api.clearItem, "token");
   }
 }
