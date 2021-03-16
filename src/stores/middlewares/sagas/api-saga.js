@@ -82,6 +82,18 @@ function* authorize(user, password) {
   }
 }
 
+/*
+UI                              loginFlow
+--------------------------------------------------------
+LOGIN_REQUEST -----------> call authorize -----------> waiting to resolve
+........................................................
+........................................................
+LOGOUT.................................................. missed!
+........................................................
+................................authorize returned...... dispatch a `LOGIN_SUCCESS`!!
+........................................................
+*/
+
 function* loginFlow() {
   while (true) {
     const { user = "sathish", password = "12345678" } = yield take("LOGIN_REQUEST");
